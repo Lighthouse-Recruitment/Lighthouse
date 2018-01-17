@@ -1,26 +1,80 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
+
+
+// create express app
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configure body parser for AJAX requests
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-// Serve up static assets
-app.use(express.static("client/public"));
-
-// Set up promises with mongoose
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
 mongoose.Promise = global.Promise;
-// Connect to the Mongo DB
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/lhdb",
-  {
-    useMongoClient: true
-  }
-);
+// parse requests of content-type - application/json
+app.use(bodyParser.json())
 
-// Start the API server
-app.listen(PORT, function() {
-  console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);
+mongoose.connect('mongodb://localhost/lhdb',
+{
+    useMongoClient: true
+});
+
+// CHECK DATABASE CONNECTION
+mongoose.connection.on('error', function() {
+    console.log('Could not connect to the database. Exiting now...');
+});
+mongoose.connection.once('open', function() {
+    console.log("Successfully connected to the database");
+})
+// define a simple route
+
+
+//----ROUTER -------------------
+// const users = require('./controllers/lh.controller.js');
+var User = require('./models/Users.model.js');
+var router = new express.Router();
+    //later link to index
+    app.get('/', function(req, res){
+    res.json({"message": "Welcome to Lighthouse."});
+    });
+    // Create a new user
+    router.post('/users', function(req, res) {
+        var user = new User({
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password
+        });
+
+        user.save(function(err, data) {
+            console.log(data);
+            if(err) {
+                console.log(err);
+                res.status(500).send({message: "Some error occurred while creating the user."});
+            } else {
+                res.send(data);
+            }
+        });
+    });
+
+    // Retrieve all users
+    router.get('/users', function(req, res) {
+        // Retrieve and return all notes from the database.
+        User.find({})
+          .then(function(data){
+            res.json(data);
+          });
+    });
+
+    // Retrieve a single Note with noteId
+    // app.get('/users/:userId', users.findOne);
+    //
+    // // Update a Note with userId
+    // app.put('/users/:userId', users.update);
+    //
+    // // Delete a Note with userId
+    // app.delete('/users/:userId', users.delete);
+//------------------------------
+
+// listen for requests
+app.listen(PORT, function(){
+    console.log("Server is listening on port " + PORT);
 });

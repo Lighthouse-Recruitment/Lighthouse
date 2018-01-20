@@ -3,40 +3,58 @@ const Schema = mongoose.Schema;
 // const Note = require('./Notes');
 
 var userSchema = new Schema({
-    name: {type: String, required: true},
-    email: {type: String, required: true},
-    password: {type: String, required: true},
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
     resume: String,
     bio: String,
-    note: {type: Schema.Types.ObjectId,ref: "Note"}
+    note: {
+        type: Schema.Types.ObjectId,
+        ref: "Note"
+    }
 });
 var User = module.exports = mongoose.model('User', userSchema);
 
-module.exports.getUsers = function(callback, limit){
-  User.find(callback).limit(limit);
-}
-
-// add
-module.exports.addUser = function(id, callback){
-  var query = {_id: id};
-  User.create(query, callback);
-}
-
-module.exports.getUsersById = function(id, callback){
-  User.findById(id, callback);
-}
-
-module.exports.updateUser = function(id, user, option, callback){
-  var query = {_id: id};
-  var update = {
-    name: user.name,
-    email: user.email,
-    password: user.password
-  }
-  User.findOneAndUpdate(query, update, option, callback);
-}
-
-module.exports.deleteUser = function(id, callback){
-  var query = {_id: id};
-  User.remove(query,callback);
-}
+module.exports = {
+        getUsers: function(req, res) {
+          User
+            .find(req.query)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        // add
+        addUser: function(req, res) {
+          User
+            .create(req.body)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        getUsersById: function(req, res) {
+          User
+            .findById(req.params._id)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        updateUser: function(req, res) {
+          User
+            .findOneAndUpdate({ _id: req.params._id }, req.body)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        deleteUser: function(req, res) {
+          User
+            .findById({ _id: req.params._id })
+            .then(dbModel => dbModel.remove())
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    }
+};

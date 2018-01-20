@@ -10,31 +10,37 @@ var recruiterSchema = new Schema({
 });
 var Recruiter = module.exports = mongoose.model('Recruiter', recruiterSchema);
 
-module.exports.getRecruiters = function(callback, limit){
-  Recruiter.find(callback).limit(limit);
-}
-
-// add
-module.exports.addRecruiter = function(id, callback){
-  var query = {_id: id};
-  Recruiter.create(query, callback);
-}
-
-module.exports.getRecruitersById = function(id, callback){
-  Recruiter.findById(id, callback);
-}
-
-module.exports.updateRecruiter = function(id, recruiter, option, callback){
-  var query = {_id: id};
-  var update = {
-    name: recruiter.name,
-    email: recruiter.email,
-    password: recruiter.password
-  }
-  Recruiter.findOneAndUpdate(query, update, option, callback);
-}
-
-module.exports.deleteRecruiter = function(id, callback){
-  var query = {_id: id};
-  Recruiter.remove(query,callback);
-}
+module.exports = {
+        getRecruiters: function(req, res) {
+          Recruiter
+            .find(req.query)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        // add
+        addRecruiter: function(req, res) {
+          Recruiter
+            .create(req.body)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        getRecruitersById: function(req, res) {
+          Recruiter
+            .findById(req.params._id)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        updateRecruiter: function(req, res) {
+          Recruiter
+            .findOneAndUpdate({ _id: req.params._id }, req.body)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        deleteRecruiter: function(req, res) {
+          Recruiter
+            .findById({ _id: req.params._id })
+            .then(dbModel => dbModel.remove())
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    }
+};

@@ -6,31 +6,37 @@ var notesSchema = new mongoose.Schema({
 
 const Note = module.export = mongoose.model('Note', notesSchema);
 
-module.exports.getNotes = function(callback, limit){
-  Note.find(callback).limit(limit);
-}
-
-// add
-module.exports.addNote = function(id, callback){
-  var query = {_id: id};
-  Note.create(query, callback);
-}
-
-module.exports.getNotesById = function(id, callback){
-  Note.findById(id, callback);
-}
-
-module.exports.updateNote = function(id, note, option, callback){
-  var query = {_id: id};
-  var update = {
-    name: note.name,
-    email: note.email,
-    password: note.password
-  }
-  Note.findOneAndUpdate(query, update, option, callback);
-}
-
-module.exports.deleteNote = function(id, callback){
-  var query = {_id: id};
-  Note.remove(query,callback);
-}
+module.exports = {
+        getNotes: function(req, res) {
+          Note
+            .find(req.query)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        // add
+        addNote: function(req, res) {
+          Note
+            .create(req.body)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        getNotesById: function(req, res) {
+          Note
+            .findById(req.params._id)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        updateNote: function(req, res) {
+          Note
+            .findOneAndUpdate({ _id: req.params._id }, req.body)
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    },
+        deleteNote: function(req, res) {
+          Note
+            .findById({ _id: req.params._id })
+            .then(dbModel => dbModel.remove())
+            .then(dbModel => res.json(dbModel))
+            .catch(err => res.status(422).json(err));
+    }
+};

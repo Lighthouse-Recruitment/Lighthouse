@@ -6,7 +6,7 @@ var recruiterSchema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
-    note: {type: Schema.Types.ObjectId,ref: "Note"}
+    users: {type: Schema.Types.ObjectId,ref: "User"}
 });
 var Recruiter = module.exports = mongoose.model('Recruiter', recruiterSchema);
 

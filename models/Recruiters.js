@@ -14,6 +14,7 @@ module.exports = {
         getRecruiters: function(req, res) {
           Recruiter
             .find(req.query)
+            // .populate(Note)
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },

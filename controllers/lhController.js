@@ -1,43 +1,43 @@
+const express = require("express");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-// GET EVERYBODY
-app.get('/', function(req,res,next){
-  db.User.find(function(err, allindexs){
-    if (err) return next(err);
-    res.json(allindexs);
-  });
+const router = require("express").Router();
+
+//Models
+const User = require('../models/Users');
+const Recruiter = require('../models/Recruiters');
+const Note = require('../models/Notes')
+
+//router
+router.get('/', function(req,res){
+  res.send("user api/users");
 });
-// GET SINGLE PERSON BY ID
-app.get('/:id', function(req,res,next){
-  db.User.findById(req.params.id, function(err,Post){
-    if(err) return next(err);
-    console.log(post)
-    res.json(post);
-  });
-});
-// SAVE Person
-app.post('/', function(req,res,next){
-  db.User.create(req.body, function(err, post){
-    if(err) return next(err);
-    res.json(post);
-  });
-});
-// SAVE PERSON'S Note
-app.post('/:id', function(req,res,next){
-  db.Note.create(req.body, function(err, post){
-    if(err) return next(err);
-    res.json(post);
-  });
-});
-app.put('/:id', function(req,res,next){
-  db.User.findByIdAndUpdate(req.params.id, req.body, function(err, post){
-    if(err) return next(err);
-    res.json(post);
-  });
-});
-app.delete('/:id', function(req,res,next){
-  db.User.findByIdAndRemove(req.params.id, req.body, function(err, post){
-    if(err) return next(err);
-    res.json(post);
-  });
-});
-module.exports = app;
+
+router.route("/api/users")
+    .get(User.getUsers)
+    .post(User.addUser);
+
+router.route("/api/users/:_id")
+    .get(User.getUsersById)
+    .put(User.updateUser)
+    .delete(User.deleteUser);
+
+router.route("/api/recruiters")
+    .get(Recruiter.getRecruiters)
+    .post(Recruiter.addRecruiter);
+
+router.route("/api/recruiters/:_id")
+    .get(Recruiter.getRecruitersById)
+    .put(Recruiter.updateRecruiter)
+    .delete(Recruiter.deleteRecruiter);
+
+router.route("/api/notes")
+    .get(Note.getNotes)
+    .post(Note.addNote);
+
+router.route("/api/notes/:_id")
+    .get(Note.getNotesById)
+    .put(Note.updateNote)
+    .delete(Note.deleteNote);
+
+module.exports = router;

@@ -5,15 +5,17 @@ import API from "../../utils/API";
 import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+// import { Input, TextArea, FormBtn } from "../../components/Form";
 
 class Users extends Component {
   state = {
     users: [],
-    title: "",
-    author: "",
-    synopsis: ""
-  };
+    name: "",
+    email: "",
+    userImage: "",
+    resume:"",
+    bio:""
+  }
 
   componentDidMount() {
     this.loadUsers();
@@ -22,7 +24,14 @@ class Users extends Component {
   loadUsers = () => {
     API.getUsers()
       .then(res =>
-        this.setState({ users: res.data, title: "", author: "", synopsis: "" })
+        this.setState({
+          users: res.data,
+          name: "",
+          email: "",
+          userImage: "",
+          resume:"",
+          bio:""
+        })
       )
       .catch(err => console.log(err));
   };
@@ -33,60 +42,23 @@ class Users extends Component {
       .catch(err => console.log(err));
   };
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveUser({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
-      })
-        .then(res => this.loadUsers())
-        .catch(err => console.log(err));
-    }
-  };
-
   render() {
     return (
       <Container fluid>
         <Row>
           <Col size="md-6">
             <Jumbotron>
-              <h1>What Users Should I Read?</h1>
+              <h1>User Cards</h1>
             </Jumbotron>
-            <form>
-              <Input
-                value={this.state.title}
-                onChange={this.handleInputChange}
-                name="title"
-                placeholder="Title (required)"
-              />
-              <Input
-                value={this.state.author}
-                onChange={this.handleInputChange}
-                name="author"
-                placeholder="Author (required)"
-              />
-              <TextArea
-                value={this.state.synopsis}
-                onChange={this.handleInputChange}
-                name="synopsis"
-                placeholder="Synopsis (Optional)"
-              />
-              <FormBtn
-                disabled={!(this.state.author && this.state.title)}
-                onClick={this.handleFormSubmit}
-              >
-                Submit User
-              </FormBtn>
-            </form>
+            //--------------------------------------
+            <userCard>
+              <img src={this.state.userImg}></img>
+              <h2>{this.state.name}</h2>
+              <p>{this.state.email}</p>
+              <p><a href={this.state.resume}>Resume</a></p>
+              <p>{this.state.bio}</p>
+            </userCard>
+            //--------------------------------------
           </Col>
           <Col size="md-6 sm-12">
             <Jumbotron>

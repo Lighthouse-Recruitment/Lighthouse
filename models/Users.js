@@ -15,6 +15,7 @@ var userSchema = new Schema({
         type: String,
         required: true
     },
+    userImage: String,
     resume: String,
     bio: String,
     note: {

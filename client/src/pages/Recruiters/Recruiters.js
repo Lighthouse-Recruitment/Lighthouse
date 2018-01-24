@@ -4,7 +4,7 @@ import Jumbotron from "../../components/Jumbotron";
 // import { Col, Row, Container } from "../../components/Grid";
 // import { List, ListItem } from "../../components/List";
 // import DeleteBtn from "../../components/DeleteBtn";
-import {usercard, usercardbody} from "../../components/userCard";
+import {Usercard, Usercardbody} from "../../components/userCard";
 import "./rec.css"
 
 class Recruiters extends Component {
@@ -34,17 +34,17 @@ class Recruiters extends Component {
     <div>
       <div className="col-md-8 col-sm-12">
         {this.state.users.length ? (
-          <usercard className="usercard">
+          <Usercard className="usercard">
             {this.state.users.map(user => (
-              <usercardbody className="usercardbody" key={user._id}>
+              <Usercardbody className="usercardbody" key={user._id}>
                 <img className="student-img" src={user.userImage} alt={user.name}/>
                 <h2>{user.name}</h2>
                 <p>{user.email}</p>
                 <p><a href={user.resume}>{user.resume}</a></p>
                 <p>{user.bio}</p>
-              </usercardbody>
+              </Usercardbody>
             ))}
-          </usercard>
+          </Usercard>
         ) : (
           <h3>No Results to Display</h3>
         )}

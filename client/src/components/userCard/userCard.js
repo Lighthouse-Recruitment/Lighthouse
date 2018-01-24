@@ -5,7 +5,7 @@ import "./userCard.css";
 
 export const Usercard = ({children}) => {
   return(
-    <div className="all-user">
+    <div className="usercard">
       {children}
     </div>
   );

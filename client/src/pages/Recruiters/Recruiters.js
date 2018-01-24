@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 import Jumbotron from "../../components/Jumbotron";
-import { Col, Row, Container } from "../../components/Grid";
-import { List, ListItem } from "../../components/List";
-import DeleteBtn from "../../components/DeleteBtn";
+// import { Col, Row, Container } from "../../components/Grid";
+// import { List, ListItem } from "../../components/List";
+// import DeleteBtn from "../../components/DeleteBtn";
+import {usercard, usercardbody} from "../../components/userCard";
+import "./rec.css"
 
 class Recruiters extends Component {
   state = {
     users: [],
+    userImage: "",
     name: "",
     email: "",
+    resume: "",
     bio: ""
   };
 
@@ -20,37 +24,37 @@ class Recruiters extends Component {
   loadUsers = () => {
     API.getUsers()
       .then(res =>
-        this.setState({ users: res.data, name: "", email: "", bio: "" })
+        this.setState({ users: res.data, userImage:"",name: "", email: "", resume:"", bio: "" })
       )
       .catch(err => console.log(err));
   };
 
   render() {
     return (
-      // <Jumbotron>
-      //   <p>{this.state.users}</p>
-      //   <h1>cookie</h1>
-      // </Jumbotron>
-
-      <Col size="md-12 sm-12">
-        <Jumbotron>
-          <h1>Users On My List</h1>
-        </Jumbotron>
+    <div>
+      <div className="col-md-8 col-sm-12">
         {this.state.users.length ? (
-          <List>
+          <usercard className="usercard">
             {this.state.users.map(user => (
-              <ListItem key={user._id}>
-                {user.name}
-                {user.email}
-                {user.bio}
-                <DeleteBtn onClick={() => this.deleteUser(user._id)} />
-              </ListItem>
+              <usercardbody className="usercardbody" key={user._id}>
+                <img className="student-img" src={user.userImage} alt={user.name}/>
+                <h2>{user.name}</h2>
+                <p>{user.email}</p>
+                <p><a href={user.resume}>{user.resume}</a></p>
+                <p>{user.bio}</p>
+              </usercardbody>
             ))}
-          </List>
+          </usercard>
         ) : (
           <h3>No Results to Display</h3>
         )}
-      </Col>
+      </div>
+      <div className="col-md-4 col-sm-12">
+          <Jumbotron>
+            <h1>Users On My List</h1>
+          </Jumbotron>
+      </div>
+    </div>
     );
   }
 }

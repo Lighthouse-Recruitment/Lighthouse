@@ -1,18 +1,20 @@
 import React, { Component } from "react";
-import DeleteBtn from "../../components/DeleteBtn";
-import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
-import { Link } from "react-router-dom";
-import { Col, Row, Container } from "../../components/Grid";
-import { List, ListItem } from "../../components/List";
-import { Input, TextArea, FormBtn } from "../../components/Form";
+import Jumbotron from "../../components/Jumbotron";
+// import { Col, Row, Container } from "../../components/Grid";
+// import { List, ListItem } from "../../components/List";
+// import DeleteBtn from "../../components/DeleteBtn";
+import {usercard, usercardbody} from "../../components/userCard";
+import "./rec.css"
 
-class Users extends Component {
+class Recruiters extends Component {
   state = {
     users: [],
-    title: "",
-    author: "",
-    synopsis: ""
+    userImage: "",
+    name: "",
+    email: "",
+    resume: "",
+    bio: ""
   };
 
   componentDidMount() {
@@ -22,97 +24,54 @@ class Users extends Component {
   loadUsers = () => {
     API.getUsers()
       .then(res =>
-        this.setState({ users: res.data, title: "", author: "", synopsis: "" })
+        this.setState({ users: res.data, userImage:"",name: "", email: "", resume:"", bio: "" })
       )
       .catch(err => console.log(err));
   };
 
-  deleteUser = id => {
-    API.deleteUser(id)
-      .then(res => this.loadUsers())
-      .catch(err => console.log(err));
-  };
-
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-    if (this.state.title && this.state.author) {
-      API.saveUser({
-        title: this.state.title,
-        author: this.state.author,
-        synopsis: this.state.synopsis
-      })
-        .then(res => this.loadUsers())
-        .catch(err => console.log(err));
-    }
-  };
+  // copyinfonote = event => {
+  //   <usercard onclick={() => this.getUser(user._id)} />
+  //   $(this).on("click", ()=>{
+  //     {user.name}
+  //   })
+  // }
 
   render() {
     return (
-      <Container fluid>
-        <Row>
-          <Col size="md-6">
-            <Jumbotron>
-              <h1>What Users Should I Read?</h1>
-            </Jumbotron>
-            <form>
-              <Input
-                value={this.state.title}
-                onChange={this.handleInputChange}
-                name="title"
-                placeholder="Title (required)"
-              />
-              <Input
-                value={this.state.author}
-                onChange={this.handleInputChange}
-                name="author"
-                placeholder="Author (required)"
-              />
-              <TextArea
-                value={this.state.synopsis}
-                onChange={this.handleInputChange}
-                name="synopsis"
-                placeholder="Synopsis (Optional)"
-              />
-              <FormBtn
-                disabled={!(this.state.author && this.state.title)}
-                onClick={this.handleFormSubmit}
-              >
-                Submit User
-              </FormBtn>
-            </form>
-          </Col>
-          <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>Users On My List</h1>
-            </Jumbotron>
-            {this.state.users.length ? (
-              <List>
-                {this.state.users.map(user => (
-                  <ListItem key={user._id}>
-                    <Link to={"/users/" + user._id}>
-                      <strong>
-                        {user.title} by {user.author}
-                      </strong>
-                    </Link>
-                    <DeleteBtn onClick={() => this.deleteUser(user._id)} />
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <h3>No Results to Display</h3>
-            )}
-          </Col>
-        </Row>
-      </Container>
+    <div>
+      <div className="col-md-8 col-sm-12">
+        {this.state.users.length ? (
+          <usercard className="usercard">
+            {this.state.users.map(user => (
+              <usercardbody className="usercardbody" key={user._id}>
+                <img className="student-img" src={user.userImage} alt={user.name}/>
+                <h2>{user.name}</h2>
+                <p>{user.email}</p>
+                <p><a href={user.resume}>{user.resume}</a></p>
+                <p>{user.bio}</p>
+              </usercardbody>
+            ))}
+          </usercard>
+        ) : (
+          <h3>No Results to Display</h3>
+        )}
+      </div>
+      <div className="col-md-4 col-sm-12">
+      <Jumbotron>
+        <h1>Users On My List</h1>
+      </Jumbotron>
+        // <h2>TAKE NOTES HERE<H2>
+        // this.copyinfonote(this.state.name)
+        // <TextArea />
+        // <FormBtn
+        //   onClick={this.##}
+        // >
+        //   Submit
+        // </FormBtn>
+      </div>
+    </div>
     );
   }
 }
 
-export default Users;
+export default Recruiters;

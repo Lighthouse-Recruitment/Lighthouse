@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="42d0beec-c618-46cb-b3b4-f671531eea1f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/components/recruiterNotes/App.js" afterPath="$PROJECT_DIR$/client/src/components/recruiterNotes/App.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/components/recruiterNotes/Note.js" afterPath="$PROJECT_DIR$/client/src/components/recruiterNotes/Note.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/components/recruiterNotes/Notes.js" afterPath="$PROJECT_DIR$/client/src/components/recruiterNotes/Notes.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />

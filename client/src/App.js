@@ -4,6 +4,7 @@ import Books from "./pages/Users";
 import Detail from "./pages/Detail";
 import NoMatch from "./pages/NoMatch";
 import Nav from "./components/Nav";
+import Notes from "./components/recruiterNotes/Notes"
 
 const App = () =>
   <Router>

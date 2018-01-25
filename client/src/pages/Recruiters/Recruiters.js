@@ -53,6 +53,7 @@ class Recruiters extends Component {
           <Jumbotron>
             <h1>Users On My List</h1>
           </Jumbotron>
+
       </div>
     </div>
     );
@@ -60,3 +61,6 @@ class Recruiters extends Component {
 }
 
 export default Recruiters;
+// <div>
+//   <Usercarbody onclick={()=> this.getUser(user.name)} />
+// </div>

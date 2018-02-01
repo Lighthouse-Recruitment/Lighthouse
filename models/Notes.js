@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var notesSchema = new mongoose.Schema({
-  id: String,
+  name: String,
   body: String
 });
 
@@ -29,10 +29,17 @@ module.exports = {
     },
         updateNote: function(req, res) {
           Note
-            .findOneAndUpdate({ _id: req.params._id }, req.body)
-            .then(dbModel => res.json(dbModel))
-            .catch(err => res.status(422).json(err));
-    },
+          .create(req.body)
+          .then(function(dbNote) {
+            return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+            })
+            .then(function(dbArticle) {
+              res.json(dbArticle);
+            })
+            .catch(function(err) {
+              res.json(err);
+            });
+          },
         deleteNote: function(req, res) {
           Note
             .findById({ _id: req.params._id })

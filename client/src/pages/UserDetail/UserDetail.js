@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 import { Input, TextArea, FormBtn } from "../../components/Form";
-// import {Userform, Userformbody} from "../../components/userForm";
-import {Userform} from "../../components/userForm";
-import "./user.css"
+import {Userform, Userformbody} from "../../components/userForm";
+import { Link } from "react-router-dom";
+import "./userdetail.css"
 
 
-class Users extends Component {
+class UserDetail extends Component {
   state = {
-    users: [],
+    user: [],
     userImage: "",
     name: "",
     email: "",
@@ -17,7 +17,9 @@ class Users extends Component {
   };
 
   componentDidMount() {
-    this.loadUsers();
+    API.getUser(this.props.match.params.id)
+      .then(res => this.setState({ user: res.data }))
+      .catch(err => console.log(err));
   }
 
   loadUsers = () => {
@@ -36,12 +38,6 @@ class Users extends Component {
       .catch(err => console.log(err));
   };
 
-  deleteUser = id => {
-    API.deleteUser(id)
-      .then(res => this.loadUsers())
-      .catch(err => console.log(err));
-  };
-
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -49,25 +45,50 @@ class Users extends Component {
     });
   };
 
+
+//--------------------------------------------
+// updateUser: function(req, res) {
+//   User
+//     .findOneAndUpdate({ _id: req.params._id }, req.body)
+//     .then(dbModel => res.json(dbModel))
+//     .catch(err => res.status(422).json(err));
+// },
+//--------------------------------------------
+
+
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.name && this.state.email) {
-      API.saveUser({
+      API.updateUser({
         userImage: this.state.userImage,
         name: this.state.name,
         email: this.state.email,
         resume: this.state.resume,
         bio: this.state.bio
       })
-        .then(res => this.props.history.push('/users/'+ res.data._id))
+        .then(res => res.loadUsers())
         .catch(err => console.log(err));
-    }
   };
 
   render() {
     return (
       <Userform>
-          <h2>USER INFO</h2>
+      <Link to="/">
+        <button> Home Page </button>
+      </Link>
+      <div className="lastCard">
+          <Userform>
+              <Userformbody>
+                <img className="student-img" src={this.state.user.userImage} alt={this.state.user.name}/>
+                <h2>{this.state.user.name}</h2>
+                <p>{this.state.user.email}</p>
+                <p><a href={this.state.user.resume}>{this.state.user.resume}</a></p>
+                <p>{this.state.user.bio}</p>
+              </Userformbody>
+          </Userform>
+      </div>
+
+
+          <h2>EDIT</h2>
           <div className="userBlock">
             <form>
               <Input
@@ -101,7 +122,6 @@ class Users extends Component {
                 placeholder="bio (Optional)"
               />
               <FormBtn
-                disabled={!(this.state.name && this.state.email)}
                 onClick={this.handleFormSubmit}
               >
                 Submit User
@@ -114,4 +134,4 @@ class Users extends Component {
   }
 }
 
-export default Users;
+export default UserDetail;

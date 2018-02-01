@@ -16,5 +16,25 @@ export default {
   // Saves a user to the database
   saveUser: function(userData) {
     return axios.post("/api/users", userData);
+  },
+  updateUser: function(id){
+    return axios.put("/api/users/" + id);
+  },
+  // Gets all users
+  getNotes: function() {
+    return axios.get("/api/notes");
+  },
+  // Gets the user with the given id
+  getNote: function(id) {
+    return axios.get("/api/notes/" + id);
+  },
+  // Deletes the user with the given id
+  deleteNote: function(id) {
+    return axios.delete("/api/notes/" + id);
+  },
+  // Saves a user to the database
+  saveNote: function(noteData) {
+    return axios.post("/api/notes", noteData);
   }
+
 };

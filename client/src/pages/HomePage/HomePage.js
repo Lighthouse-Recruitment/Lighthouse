@@ -11,6 +11,7 @@ class HomePage extends Component {
   render() {
     return (
       <div className="homepage">
+        <h1 className="title_HM">LIGHTHOUSE RECRUITER</h1>
         <Link to="/studentlogin">
         <button className="btn_HM">STUDENT</button>
         </Link>

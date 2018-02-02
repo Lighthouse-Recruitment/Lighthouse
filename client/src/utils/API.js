@@ -17,8 +17,8 @@ export default {
   saveUser: function(userData) {
     return axios.post("/api/users", userData);
   },
-  updateUser: function(id){
-    return axios.put("/api/users/" + id);
+  updateUser: function(id, userData){
+    return axios.put("/api/users/" + id, userData);
   },
   // Gets all users
   getNotes: function() {

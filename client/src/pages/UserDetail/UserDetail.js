@@ -45,27 +45,16 @@ class UserDetail extends Component {
     });
   };
 
-
-//--------------------------------------------
-// updateUser: function(req, res) {
-//   User
-//     .findOneAndUpdate({ _id: req.params._id }, req.body)
-//     .then(dbModel => res.json(dbModel))
-//     .catch(err => res.status(422).json(err));
-// },
-//--------------------------------------------
-
-
   handleFormSubmit = event => {
     event.preventDefault();
-      API.updateUser({
+      API.updateUser(this.props.match.params.id, {
         userImage: this.state.userImage,
         name: this.state.name,
         email: this.state.email,
         resume: this.state.resume,
         bio: this.state.bio
       })
-        .then(res => res.loadUsers())
+        .then(res => window.location.reload())
         .catch(err => console.log(err));
   };
 

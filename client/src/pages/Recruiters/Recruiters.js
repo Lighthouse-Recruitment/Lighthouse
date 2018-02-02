@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 // import Jumbotron from "../../components/Jumbotron";
+import { Link } from "react-router-dom";
 import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import DeleteBtn from "../../components/DeleteBtn";
@@ -34,6 +35,9 @@ class Recruiters extends Component {
   render() {
     return (
     <div>
+      <Link to="/">
+      <button className="btn_HM">HOME PAGE</button>
+      </Link>
       <div className="col-md-8 col-sm-12">
         {this.state.users.length ? (
           <Usercard className="usercard">

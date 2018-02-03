@@ -1,12 +1,8 @@
-.Usercard {
-  width:100%;
+
+.textsize{
+  font-size:12px;
 }
-.Usercardbody{
-  width:23%;
-  min-width:150px;
-  border:1px solid black;
-  height: 300px;
-  float:left;
-  margin: 5px 5px 5px 0;
-  text-align: center;
+
+.btn_HM {
+  float:right;
 }

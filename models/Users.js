@@ -13,15 +13,12 @@ var userSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     userImage: String,
     resume: String,
     bio: String,
-    note: {
-        type: Schema.Types.ObjectId,
-        ref: "Note"
-    }
+    note: String
 });
 var User = module.exports = mongoose.model('User', userSchema);
 
@@ -29,6 +26,7 @@ module.exports = {
         getUsers: function(req, res) {
           User
             .find(req.query)
+            // .populate('note')
             .then(dbModel => res.json(dbModel))
             .catch(err => res.status(422).json(err));
     },

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
 import { Input, TextArea, FormBtn } from "../../components/Form";
-// import {Userform, Userformbody} from "../../components/userForm";
-import {Userform} from "../../components/userForm";
+import {Userform, Userformbody} from "../../components/userForm";
 import "./user.css"
 
 
@@ -109,6 +108,24 @@ class Users extends Component {
               <div>  </div>
             </form>
           </div>
+
+
+        <div className="lastCard">
+          {this.state.users[this.state.users.length-1] ? (
+            <Userform>
+                <Userformbody key={this.state.users[this.state.users.length-1]._id}>
+                  <img className="student-img" src={this.state.users[this.state.users.length-1].userImage} alt={this.state.users[this.state.users.length-1].name}/>
+                  <h2>{this.state.users[this.state.users.length-1].name}</h2>
+                  <p>{this.state.users[this.state.users.length-1].email}</p>
+                  <p><a href={this.state.users[this.state.users.length-1].resume}>{this.state.users[this.state.users.length-1].resume}</a></p>
+                  <p>{this.state.users[this.state.users.length-1].bio}</p>
+                </Userformbody>
+
+            </Userform>
+          ) : (
+            <h3>No Results to Display</h3>
+          )}
+        </div>
       </Userform>
     );
   }

@@ -7,8 +7,8 @@ import { List, ListItem } from "../../components/List";
 import DeleteBtn from "../../components/DeleteBtn";
 import {Usercard, Usercardbody} from "../../components/userCard";
 import { Input,  FormBtn } from "../../components/Form";
-
 import "./rec.css"
+
 
 class Recruiters extends Component {
   state = {
